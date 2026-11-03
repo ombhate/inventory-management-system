@@ -1,0 +1,34 @@
+8. SQL Assessment
+
+Write and execute the following basic SQL queries:
+my
+• Display all products.
+-->select * from products;
+
+• Find product by SKU.
+  -->select sku
+     from products
+• Find low-stock products.
+mysql> select name
+    -> from products
+    -> where quantity < 10;
+
+• Count products by category.
+mysql> select count(*)
+    -> from products
+    -> group by category_id;
+
+• Calculate total inventory value.
+mysql> select sum(price*quantity) as total_value
+    -> from products;
+
+• Join products with categories.
+mysql> select p.name, c.name
+    -> from products p inner join categories c
+    -> on p.category_id = c.id;
+
+• Update product quantity.
+mysql> update products set quantity = 500 where id =4;
+
+• Delete a product.
+mysql> delete from products where id = 9;

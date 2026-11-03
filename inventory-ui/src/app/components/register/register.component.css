@@ -1,0 +1,12 @@
+.min-vh-75 {
+  min-height: 75vh;
+}
+
+.input-group-text {
+  color: #64748b;
+}
+
+.form-control:focus ~ .btn-outline-secondary,
+.form-control:focus {
+  border-color: #10b981;
+}

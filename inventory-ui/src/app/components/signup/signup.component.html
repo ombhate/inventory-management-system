@@ -1,0 +1,132 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-icon">📦</div>
+      <h2>Create Your Account</h2>
+      <p class="subtitle">Join Inventory Management to monitor stock and products</p>
+    </div>
+
+    <!-- Alert Messages -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      <span>⚠️ {{ errorMessage }}</span>
+    </div>
+    <div *ngIf="successMessage" class="alert alert-success">
+      <span>✅ {{ successMessage }}</span>
+    </div>
+
+    <!-- Template-Driven Form -->
+    <form #signupForm="ngForm" (ngSubmit)="onSignup(signupForm)" novalidate>
+      <!-- Full Name -->
+      <div class="form-group">
+        <label for="name">Full Name <span class="required">*</span></label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="form-control"
+          [class.is-invalid]="nameCtrl.invalid && nameCtrl.touched"
+          placeholder="e.g. John Doe"
+          [(ngModel)]="user.name"
+          #nameCtrl="ngModel"
+          required
+          minlength="3"
+        />
+        <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="field-error">
+          <small *ngIf="nameCtrl.errors?.['required']">Full name is required.</small>
+          <small *ngIf="nameCtrl.errors?.['minlength']">Name must be at least 3 characters long.</small>
+        </div>
+      </div>
+
+      <!-- Email Address -->
+      <div class="form-group">
+        <label for="email">Email Address <span class="required">*</span></label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          [class.is-invalid]="emailCtrl.invalid && emailCtrl.touched"
+          placeholder="you@example.com"
+          [(ngModel)]="user.email"
+          #emailCtrl="ngModel"
+          required
+          email
+        />
+        <div *ngIf="emailCtrl.invalid && emailCtrl.touched" class="field-error">
+          <small *ngIf="emailCtrl.errors?.['required']">Email address is required.</small>
+          <small *ngIf="emailCtrl.errors?.['email']">Please enter a valid email address.</small>
+        </div>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="form-group">
+        <label for="role">Role <span class="required">*</span></label>
+        <select
+          id="role"
+          name="role"
+          class="form-control"
+          [(ngModel)]="user.role"
+          #roleCtrl="ngModel"
+          required
+        >
+          <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+        </select>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password <span class="required">*</span></label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-control"
+          [class.is-invalid]="passwordCtrl.invalid && passwordCtrl.touched"
+          placeholder="At least 6 characters"
+          [(ngModel)]="user.password"
+          #passwordCtrl="ngModel"
+          required
+          minlength="6"
+        />
+        <div *ngIf="passwordCtrl.invalid && passwordCtrl.touched" class="field-error">
+          <small *ngIf="passwordCtrl.errors?.['required']">Password is required.</small>
+          <small *ngIf="passwordCtrl.errors?.['minlength']">Password must be at least 6 characters.</small>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          class="form-control"
+          [class.is-invalid]="confirmPasswordCtrl.invalid && confirmPasswordCtrl.touched"
+          placeholder="Re-enter password"
+          [(ngModel)]="confirmPassword"
+          #confirmPasswordCtrl="ngModel"
+          required
+        />
+        <div *ngIf="confirmPasswordCtrl.invalid && confirmPasswordCtrl.touched" class="field-error">
+          <small *ngIf="confirmPasswordCtrl.errors?.['required']">Please confirm your password.</small>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="signupForm.invalid || isSubmitting"
+      >
+        <span *ngIf="!isSubmitting">Sign Up</span>
+        <span *ngIf="isSubmitting">Creating account...</span>
+      </button>
+
+      <!-- Switch to Login -->
+      <div class="auth-footer">
+        <p>Already have an account? <a routerLink="/login">Log in here</a></p>
+      </div>
+    </form>
+  </div>
+</div>

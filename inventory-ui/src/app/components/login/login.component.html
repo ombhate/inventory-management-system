@@ -1,0 +1,130 @@
+<div class="container py-5">
+  <div class="row justify-content-center align-items-center min-vh-75">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+      <!-- Card -->
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4 p-sm-5">
+          <!-- Header -->
+          <div class="text-center mb-4">
+            <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mb-3" style="width: 64px; height: 64px;">
+              <i class="bi bi-box-seam fs-2"></i>
+            </div>
+            <h3 class="fw-bold mb-1">Welcome Back</h3>
+            <p class="text-muted small">Sign in to manage your inventory dashboard</p>
+          </div>
+
+          <!-- Alert Notifications -->
+          <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center rounded-3 py-2 px-3 mb-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+            <div class="small flex-grow-1">{{ errorMessage }}</div>
+          </div>
+
+          <div *ngIf="successMessage" class="alert alert-success d-flex align-items-center rounded-3 py-2 px-3 mb-3" role="alert">
+            <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+            <div class="small flex-grow-1">{{ successMessage }}</div>
+          </div>
+
+          <!-- Form -->
+          <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)" novalidate>
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label small fw-semibold text-secondary">
+                Email Address <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted border-end-0">
+                  <i class="bi bi-envelope"></i>
+                </span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control border-start-0"
+                  [class.is-invalid]="emailModel.invalid && (emailModel.touched || loginForm.submitted)"
+                  placeholder="name@company.com"
+                  [(ngModel)]="credentials.email"
+                  #emailModel="ngModel"
+                  required
+                  email
+                  autocomplete="email"
+                />
+              </div>
+              <div *ngIf="emailModel.invalid && (emailModel.touched || loginForm.submitted)" class="text-danger small mt-1">
+                <span *ngIf="emailModel.errors?.['required']">Email is required.</span>
+                <span *ngIf="emailModel.errors?.['email']">Please enter a valid email address.</span>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label for="password" class="form-label small fw-semibold text-secondary mb-0">
+                  Password <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted border-end-0">
+                  <i class="bi bi-shield-lock"></i>
+                </span>
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  id="password"
+                  name="password"
+                  class="form-control border-start-0 border-end-0"
+                  [class.is-invalid]="passwordModel.invalid && (passwordModel.touched || loginForm.submitted)"
+                  placeholder="Enter your password"
+                  [(ngModel)]="credentials.password"
+                  #passwordModel="ngModel"
+                  required
+                  minlength="3"
+                  autocomplete="current-password"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary border-start-0"
+                  (click)="togglePasswordVisibility()"
+                  tabindex="-1"
+                  title="Toggle password view"
+                >
+                  <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+                </button>
+              </div>
+              <div *ngIf="passwordModel.invalid && (passwordModel.touched || loginForm.submitted)" class="text-danger small mt-1">
+                <span *ngIf="passwordModel.errors?.['required']">Password is required.</span>
+                <span *ngIf="passwordModel.errors?.['minlength']">Password must be at least 3 characters.</span>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn btn-primary w-100 py-2 fw-semibold d-flex align-items-center justify-content-center shadow-sm"
+              [disabled]="isLoading"
+            >
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <span *ngIf="!isLoading"><i class="bi bi-box-arrow-in-right me-1"></i> Sign In</span>
+              <span *ngIf="isLoading">Authenticating...</span>
+            </button>
+          </form>
+
+          <!-- Divider -->
+          <div class="d-flex align-items-center my-4">
+            <hr class="flex-grow-1 my-0 text-muted" />
+            <span class="px-3 text-muted small">or</span>
+            <hr class="flex-grow-1 my-0 text-muted" />
+          </div>
+
+          <!-- Register Link -->
+          <div class="text-center">
+            <p class="text-secondary small mb-0">
+              Don't have an account yet?
+              <a routerLink="/register" class="fw-bold text-decoration-none text-primary ms-1">
+                Create Account
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

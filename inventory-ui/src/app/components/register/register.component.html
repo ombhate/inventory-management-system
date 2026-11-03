@@ -1,0 +1,208 @@
+<div class="container py-5">
+  <div class="row justify-content-center align-items-center min-vh-75">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+      <!-- Card -->
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4 p-sm-5">
+          <!-- Header -->
+          <div class="text-center mb-4">
+            <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle mb-3" style="width: 64px; height: 64px;">
+              <i class="bi bi-person-plus-fill fs-2"></i>
+            </div>
+            <h3 class="fw-bold mb-1">Create Account</h3>
+            <p class="text-muted small">Register as a user or manager in the Inventory System</p>
+          </div>
+
+          <!-- Alert Notifications -->
+          <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center rounded-3 py-2 px-3 mb-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+            <div class="small flex-grow-1">{{ errorMessage }}</div>
+          </div>
+
+          <div *ngIf="successMessage" class="alert alert-success d-flex align-items-center rounded-3 py-2 px-3 mb-3" role="alert">
+            <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+            <div class="small flex-grow-1">{{ successMessage }}</div>
+          </div>
+
+          <!-- Form -->
+          <form #regForm="ngForm" (ngSubmit)="onRegister(regForm)" novalidate>
+            <!-- Full Name -->
+            <div class="mb-3">
+              <label for="name" class="form-label small fw-semibold text-secondary">
+                Full Name <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted border-end-0">
+                  <i class="bi bi-person"></i>
+                </span>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-control border-start-0"
+                  [class.is-invalid]="nameModel.invalid && (nameModel.touched || regForm.submitted)"
+                  placeholder="e.g. John Doe"
+                  [(ngModel)]="user.name"
+                  #nameModel="ngModel"
+                  required
+                  minlength="2"
+                  pattern="^[a-zA-Z\s]+$"
+                />
+              </div>
+              <div *ngIf="nameModel.invalid && (nameModel.touched || regForm.submitted)" class="text-danger small mt-1">
+                <span *ngIf="nameModel.errors?.['required']">Full name is required.</span>
+                <span *ngIf="nameModel.errors?.['minlength']">Name must be at least 2 characters.</span>
+                <span *ngIf="nameModel.errors?.['pattern']">Name cannot contain numbers or special characters.</span>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label small fw-semibold text-secondary">
+                Email Address <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted border-end-0">
+                  <i class="bi bi-envelope"></i>
+                </span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control border-start-0"
+                  [class.is-invalid]="emailModel.invalid && (emailModel.touched || regForm.submitted)"
+                  placeholder="name@company.com"
+                  [(ngModel)]="user.email"
+                  #emailModel="ngModel"
+                  required
+                  email
+                  autocomplete="email"
+                />
+              </div>
+              <div *ngIf="emailModel.invalid && (emailModel.touched || regForm.submitted)" class="text-danger small mt-1">
+                <span *ngIf="emailModel.errors?.['required']">Email is required.</span>
+                <span *ngIf="emailModel.errors?.['email']">Please enter a valid email address.</span>
+              </div>
+            </div>
+
+            <!-- Role Selection -->
+            <div class="mb-3">
+              <label for="role" class="form-label small fw-semibold text-secondary">
+                Role Assignment <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted border-end-0">
+                  <i class="bi bi-shield-check"></i>
+                </span>
+                <select
+                  id="role"
+                  name="role"
+                  class="form-select border-start-0"
+                  [(ngModel)]="user.role"
+                  required
+                >
+                  <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label small fw-semibold text-secondary">
+                Password <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted border-end-0">
+                  <i class="bi bi-lock"></i>
+                </span>
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  id="password"
+                  name="password"
+                  class="form-control border-start-0 border-end-0"
+                  [class.is-invalid]="passModel.invalid && (passModel.touched || regForm.submitted)"
+                  placeholder="Minimum 8 characters (5 letters, 2 numbers, 1 special)"
+                  [(ngModel)]="user.password"
+                  #passModel="ngModel"
+                  required
+                  pattern="^(?=(?:.*[A-Za-z]){5,})(?=(?:.*\d){2,})(?=.*[^A-Za-z0-9]).{8,}$"
+                  autocomplete="new-password"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary border-start-0"
+                  (click)="togglePasswordVisibility()"
+                  tabindex="-1"
+                >
+                  <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+                </button>
+              </div>
+              <div *ngIf="passModel.invalid && (passModel.touched || regForm.submitted)" class="text-danger small mt-1">
+                <span *ngIf="passModel.errors?.['required']">Password is required.</span>
+                <span *ngIf="passModel.errors?.['pattern']">
+                  Password must be at least 8 characters long and contain at least 5 letters, 2 numbers, and 1 special character.
+                </span>
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-4">
+              <label for="confirmPassword" class="form-label small fw-semibold text-secondary">
+                Confirm Password <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted border-end-0">
+                  <i class="bi bi-lock-fill"></i>
+                </span>
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  class="form-control border-start-0"
+                  [class.is-invalid]="(confirmModel.invalid || (confirmPassword && confirmPassword !== user.password)) && (confirmModel.touched || regForm.submitted)"
+                  placeholder="Re-enter password"
+                  [(ngModel)]="confirmPassword"
+                  #confirmModel="ngModel"
+                  required
+                  autocomplete="new-password"
+                />
+              </div>
+              <div *ngIf="(confirmModel.invalid || (confirmPassword && confirmPassword !== user.password)) && (confirmModel.touched || regForm.submitted)" class="text-danger small mt-1">
+                <span *ngIf="confirmModel.errors?.['required']">Please confirm your password.</span>
+                <span *ngIf="confirmPassword && confirmPassword !== user.password">Passwords do not match.</span>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn btn-success w-100 py-2 fw-semibold d-flex align-items-center justify-content-center shadow-sm"
+              [disabled]="isLoading"
+            >
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <span *ngIf="!isLoading"><i class="bi bi-person-check me-1"></i> Complete Registration</span>
+              <span *ngIf="isLoading">Registering Account...</span>
+            </button>
+          </form>
+
+          <!-- Divider -->
+          <div class="d-flex align-items-center my-4">
+            <hr class="flex-grow-1 my-0 text-muted" />
+            <span class="px-3 text-muted small">or</span>
+            <hr class="flex-grow-1 my-0 text-muted" />
+          </div>
+
+          <!-- Login Link -->
+          <div class="text-center">
+            <p class="text-secondary small mb-0">
+              Already have an account?
+              <a routerLink="/login" class="fw-bold text-decoration-none text-primary ms-1">
+                Sign In
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
