@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-root',
@@ -17,11 +18,20 @@ export class App {
   ) {}
 
   logout(): void {
-    const confirmed = window.confirm('Are you sure you want to log out?');
-
-    if (confirmed) {
-      this.authService.logout();
-      this.router.navigate(['/login']);
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will be logged out of your session!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log out',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }
