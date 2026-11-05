@@ -7,6 +7,6 @@ import com.inventoryManagement.entity.User;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
 
-	Optional<User> findByEmailAndPassword(String email, String password);
+	Optional<User> findByEmail(String email );
 
 }
