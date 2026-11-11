@@ -7,7 +7,7 @@ import { Category } from '../models/category.model';
   providedIn: 'root'
 })
 export class CategoryService {
-  private readonly baseUrl = 'http://localhost:8088';
+  private readonly baseUrl = 'https://inventory-backend-wbqw.onrender.com';
 
   constructor(private http: HttpClient) {}
 

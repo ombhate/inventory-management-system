@@ -7,7 +7,7 @@ import { User, LoginRequest } from '../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly baseUrl = 'http://localhost:8088';
+  private readonly baseUrl = 'https://inventory-backend-wbqw.onrender.com';
   private readonly USER_STORAGE_KEY = 'inventory_user_session';
 
   constructor(private http: HttpClient) {}

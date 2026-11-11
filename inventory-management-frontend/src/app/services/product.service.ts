@@ -7,7 +7,7 @@ import { Product } from '../models/product.model';
   providedIn: 'root'
 })
 export class ProductService {
-  private readonly baseUrl = 'http://localhost:8088';
+  private readonly baseUrl = 'https://inventory-backend-wbqw.onrender.com';
 
   constructor(private http: HttpClient) {}
 
