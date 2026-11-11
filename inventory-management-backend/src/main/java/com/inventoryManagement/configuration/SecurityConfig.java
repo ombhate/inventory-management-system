@@ -26,8 +26,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(Customizer.withDefaults()) // Enable CORS integration
-            .csrf(csrf -> csrf.disable()) // Disable CSRF for REST APIs
+            .cors(Customizer.withDefaults()) // <-- CRITICAL: Enables CORS in Spring Security
+            .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/**").permitAll() 
             );
@@ -38,12 +38,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Allow your live Render frontend and local development
         configuration.setAllowedOrigins(List.of(
             "https://inventory-management-system-q5ev.onrender.com", 
             "http://localhost:4200"
         ));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         
